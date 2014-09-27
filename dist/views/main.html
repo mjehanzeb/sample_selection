@@ -1,0 +1,59 @@
+<div class="jumbotron" ng-switch on="currentView">
+  <div ng-switch-when="selection">
+    <h1>Sector Selector</h1>
+    <p class="lead">
+      Select upto 4 sectors to compare.
+    </p>
+    <p class="bg-danger" ng-show="visitor.warning" ng-bind="visitor.warning"></p>
+    <p>
+      <a
+        class="btn btn-lg btn-default btn-sector"
+        href ng-repeat="sector in sectors"
+        ng-click="sectorSelector($index)"
+        ng-class="{'btn-success': sectors[$index].selected == true}">
+        <span ng-bind="sector.text"></span>
+        <span class="glyphicon" ng-class="{'glyphicon-ok': sectors[$index].selected == true}"></span>
+      </a>
+    </p>
+    <p class="block-submit">
+      <button type="button" ng-disabled="checkSelection();" class="btn btn-primary btn-lg btn-block" ng-click="submit();">Submit Choices</button>
+    </p>
+  </div>
+
+  <div ng-switch-when="submit"  ng-animate=" 'animate' ">
+    <h1>Yay!!! </h1>
+    <h5>
+      Thanks for your choices. You chose following sector(s):
+
+    </h5>
+    <p class="lead">
+      <ul class="list-unstyled text-center">
+        <li ng-repeat="sector in sectors | filter: selectedSector">
+            <span  ng-bind="sector.text"></span>
+            <span class="glyphicon glyphicon-ok"></span>
+        </li>
+      </ul>
+    </p>
+    <h5>
+      Want more information? Enter your email below.
+    </h5>
+
+    <form class="form-inline" role="form" name="form">
+      <div class="form-group" ng-if="visitor.submission===false">
+        <div class="input-group">
+          <div class="input-group-addon">@</div>
+          <input class="form-control" type="email" ng-model="visitor.email" placeholder="Enter email" required>
+        </div>
+        <button type="submit" ng-disabled="form.$invalid" class="btn btn-default btn-submit" ng-click="submitEmail();">Submit</button>
+        <h6 class="text-left response-alert text-danger" ng-show="validation.error">Enter valid email address</h6>
+      </div>
+      <div ng-if="visitor.submission===true">
+        <p class="bg-success" ng-bind="visitor.response"></p>
+      </div>
+    </form>
+    <p class="block-submit">
+      <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="submit();"> << Change Selection Options</button>
+    </p>
+  </div>
+</div>
+
